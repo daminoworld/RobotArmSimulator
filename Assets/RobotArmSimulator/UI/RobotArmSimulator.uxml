@@ -18,6 +18,7 @@
                 <ui:ScrollView mode="Vertical" class="panel-scroll">
                     <ui:Label text="Trajectory Control" class="section-title"/>
                     <ui:DropdownField name="poseDatasetDropdown" label="Pose Dataset" class="dataset-dropdown"/>
+                    <ui:DropdownField name="ikSolverDropdown" label="IK Solver" class="dataset-dropdown"/>
                     <ui:VisualElement name="playbackButtons" class="button-row">
                         <ui:Button name="playButton" text="Play" class="button-primary"/>
                         <ui:Button name="pauseButton" text="Pause" class="button-secondary"/>

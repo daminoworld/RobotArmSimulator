@@ -13,7 +13,8 @@ namespace RobotArmSimulator
         [SerializeField] private PoseTrajectoryRenderer poseRenderer;
         [SerializeField] private JointTrajectoryPlaybackController playbackController;
         [SerializeField] private SimpleJointRobotVisualizer robotVisualizer;
-        [SerializeField] private Simple6AxisIkSolver ikSolver;
+        [SerializeField] private Simple6AxisIkSolver ccdSolver;
+        [SerializeField] private FabrikIkSolver fabrikSolver;
         [SerializeField] private OrbitCameraController cameraController;
 
         [Header("Robot Placement")]
@@ -40,6 +41,7 @@ namespace RobotArmSimulator
         [SerializeField] private string pauseButtonName = "pauseButton";
         [SerializeField] private string stopButtonName = "stopButton";
         [SerializeField] private string reloadButtonName = "reloadButton";
+        [SerializeField] private string ikSolverDropdownName = "ikSolverDropdown";
         [SerializeField] private string selectedIdLabelName = "selectedIdLabel";
         [SerializeField] private string selectedLocalPositionLabelName = "selectedLocalPositionLabel";
         [SerializeField] private string selectedLocalRotationLabelName = "selectedLocalRotationLabel";
@@ -47,6 +49,11 @@ namespace RobotArmSimulator
         [SerializeField] private string selectedWorldRotationLabelName = "selectedWorldRotationLabel";
 
         private readonly List<string> _waypointItems = new List<string>();
+
+        private IIkSolver _activeIkSolver;
+        private DropdownField _ikSolverDropdown;
+
+        private static readonly List<string> IkSolverChoices = new List<string> { "CCD", "FABRIK" };
 
         private Label _taskIdValueLabel;
         private Label _poseCountValueLabel;
@@ -108,9 +115,14 @@ namespace RobotArmSimulator
                 robotVisualizer = GetComponentInChildren<SimpleJointRobotVisualizer>();
             }
 
-            if (ikSolver == null)
+            if (ccdSolver == null)
             {
-                ikSolver = GetComponentInChildren<Simple6AxisIkSolver>();
+                ccdSolver = GetComponentInChildren<Simple6AxisIkSolver>();
+            }
+
+            if (fabrikSolver == null)
+            {
+                fabrikSolver = GetComponentInChildren<FabrikIkSolver>();
             }
         }
 
@@ -187,6 +199,15 @@ namespace RobotArmSimulator
                 RefreshPoseDatasetDropdown();
             }
 
+            _ikSolverDropdown = root.Q<DropdownField>(ikSolverDropdownName);
+            if (_ikSolverDropdown != null)
+            {
+                _ikSolverDropdown.choices = IkSolverChoices;
+                _ikSolverDropdown.SetValueWithoutNotify(IkSolverChoices[0]);
+            }
+
+            SetActiveSolver(ccdSolver);
+
             if (_waypointList != null)
             {
                 _waypointList.selectionType = SelectionType.Single;
@@ -252,6 +273,11 @@ namespace RobotArmSimulator
                 _poseDatasetDropdown.RegisterValueChangedCallback(OnPoseDatasetChanged);
             }
 
+            if (_ikSolverDropdown != null)
+            {
+                _ikSolverDropdown.RegisterValueChangedCallback(OnIkSolverChanged);
+            }
+
             _bound = true;
         }
 
@@ -296,6 +322,11 @@ namespace RobotArmSimulator
             if (_poseDatasetDropdown != null)
             {
                 _poseDatasetDropdown.UnregisterValueChangedCallback(OnPoseDatasetChanged);
+            }
+
+            if (_ikSolverDropdown != null)
+            {
+                _ikSolverDropdown.UnregisterValueChangedCallback(OnIkSolverChanged);
             }
 
             _bound = false;
@@ -386,8 +417,8 @@ namespace RobotArmSimulator
 
             RefreshSummaryLabels();
             RefreshWaypointList();
-            SetSelectedIndex(_taskData != null && _taskData.Poses.Count > 0 ? 0 : -1, true, focusCamera: false);
-            ikSolver?.SolveImmediately();
+            SetSelectedIndex(_taskData != null && _taskData.Poses.Count > 0 ? 0 : -1, true);
+            _activeIkSolver?.SolveImmediately();
             RefreshPoseDatasetDropdown();
             SetStatus(_taskData != null ? $"Loaded {_taskData.TaskId}" : "No data loaded");
             UpdatePlaybackLabels(playbackController != null ? playbackController.CurrentFrame : null);
@@ -403,10 +434,10 @@ namespace RobotArmSimulator
             }
 
             SetSelectedIndex(_waypointList.selectedIndex, false);
-            ikSolver?.SolveImmediately();
+            _activeIkSolver?.SolveImmediately();
         }
 
-        private void SetSelectedIndex(int index, bool forceUiRefresh, bool syncToolMarker = true, bool focusCamera = true)
+        private void SetSelectedIndex(int index, bool forceUiRefresh, bool syncToolMarker = true)
         {
             if (_taskData == null || _taskData.Poses.Count == 0 || index < 0 || index >= _taskData.Poses.Count)
             {
@@ -430,11 +461,6 @@ namespace RobotArmSimulator
             if (syncToolMarker && robotVisualizer != null && selectedPose != null)
             {
                 robotVisualizer.SetToolTargetPose(selectedPose.WorldPosition, selectedPose.WorldRotation);
-            }
-
-            if (focusCamera && selectedPose != null)
-            {
-                cameraController?.FocusPoint(selectedPose.WorldPosition);
             }
         }
 
@@ -565,7 +591,7 @@ namespace RobotArmSimulator
 
             if (frame.WaypointIndex >= 0 && frame.WaypointIndex != _selectedIndex)
             {
-                SetSelectedIndex(frame.WaypointIndex, false, false, false);
+                SetSelectedIndex(frame.WaypointIndex, false, false);
             }
 
             UpdatePlaybackLabels(frame);
@@ -613,13 +639,34 @@ namespace RobotArmSimulator
         private void OnStopClicked()
         {
             playbackController?.Stop();
-            ikSolver?.SolveImmediately();
+            _activeIkSolver?.SolveImmediately();
             UpdatePlaybackButtons();
         }
 
         private void OnReloadClicked()
         {
             taskLoader?.LoadTask();
+        }
+
+        private void OnIkSolverChanged(ChangeEvent<string> evt)
+        {
+            var incoming = string.Equals(evt.newValue, IkSolverChoices[1], StringComparison.Ordinal)
+                ? (MonoBehaviour)fabrikSolver
+                : (MonoBehaviour)ccdSolver;
+            SetActiveSolver(incoming);
+            _activeIkSolver?.SolveImmediately();
+        }
+
+        private void SetActiveSolver(MonoBehaviour incoming)
+        {
+            var outgoing = ReferenceEquals(incoming, ccdSolver)
+                ? (MonoBehaviour)fabrikSolver
+                : (MonoBehaviour)ccdSolver;
+
+            if (outgoing != null) outgoing.enabled = false;
+            if (incoming != null) incoming.enabled = true;
+
+            _activeIkSolver = incoming as IIkSolver;
         }
 
         private void OnPoseDatasetChanged(ChangeEvent<string> evt)

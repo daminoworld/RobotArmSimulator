@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace RobotArmSimulator
 {
-    public sealed class Simple6AxisIkSolver : MonoBehaviour
+    public sealed class Simple6AxisIkSolver : MonoBehaviour, IIkSolver
     {
         [Header("References")]
         [SerializeField] private SimpleJointRobotVisualizer robotVisualizer;

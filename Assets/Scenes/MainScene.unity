@@ -549,12 +549,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1226624415}
+  - component: {fileID: 1226624409}
+  - component: {fileID: 1226624411}
   - component: {fileID: 1226624414}
   - component: {fileID: 1226624413}
   - component: {fileID: 1226624412}
-  - component: {fileID: 1226624411}
   - component: {fileID: 1226624410}
-  - component: {fileID: 1226624409}
+  - component: {fileID: 1226624416}
   - component: {fileID: 1226624408}
   m_Layer: 0
   m_Name: SimulatorRoot
@@ -688,7 +689,8 @@ MonoBehaviour:
   poseRenderer: {fileID: 1226624413}
   playbackController: {fileID: 1226624412}
   robotVisualizer: {fileID: 1226624411}
-  ikSolver: {fileID: 1226624410}
+  ccdSolver: {fileID: 1226624410}
+  fabrikSolver: {fileID: 1226624416}
   cameraController: {fileID: 330585548}
   taskABaseReference: {fileID: 1542844988}
   taskBBaseReference: {fileID: 1326092186}
@@ -711,6 +713,7 @@ MonoBehaviour:
   pauseButtonName: pauseButton
   stopButtonName: stopButton
   reloadButtonName: reloadButton
+  ikSolverDropdownName: ikSolverDropdown
   selectedIdLabelName: selectedIdLabel
   selectedLocalPositionLabelName: selectedLocalPositionLabel
   selectedLocalRotationLabelName: selectedLocalRotationLabel
@@ -775,12 +778,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1eec6314732a3466f95b2b48021f24b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RobotArmSimulator.JointTrajectoryPlaybackController
-  playbackSpeed: 1
+  playbackSpeed: 0.7
   loopPlayback: 0
   snapToStartOnStop: 1
   playbackMode: 0
   useTrajectoryDurationForWaypoints: 1
-  waypointSecondsPerSegment: 0.6
+  waypointSecondsPerSegment: 3
 --- !u!114 &1226624413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -846,6 +849,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1226624416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1226624407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 744436ffbe4b845ef8bff4c55247d3a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RobotArmSimulator.FabrikIkSolver
+  robotVisualizer: {fileID: 0}
+  solveInLateUpdate: 1
+  iterationsPerFrame: 12
+  maxDegreesPerStep: 960
+  positionTolerance: 0.0025
+  alignOrientation: 1
+  orientationBlend: 0.35
+  wristJointCount: 3
 --- !u!1 &1326092185
 GameObject:
   m_ObjectHideFlags: 0
