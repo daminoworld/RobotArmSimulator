@@ -1,6 +1,5 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="UnityEngine.UIElements ">
-    <Style src="RobotArmSimulator.uss"/>
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" editor-extension-mode="False" schemaLocation="UnityEngine.UIElements ">
+    <Style src="project://database/Assets/RobotArmSimulator/UI/RobotArmSimulator.uss?fileID=7433441132597879392&amp;guid=c53db9051b0804b659501dd71b164e98&amp;type=3#RobotArmSimulator"/>
     <ui:VisualElement picking-mode="Ignore" class="app-root">
         <ui:VisualElement picking-mode="Position" class="top-bar panel-surface">
             <ui:VisualElement class="title-group">
@@ -33,7 +32,6 @@
                     <ui:Button name="reloadButton" text="Reload Data" class="reload-button"/>
                 </ui:ScrollView>
             </ui:VisualElement>
-            <ui:VisualElement picking-mode="Ignore" class="scene-spacer"/>
             <ui:VisualElement picking-mode="Position" class="panel-surface side-panel details-panel">
                 <ui:Label text="Selected Waypoint" class="section-title"/>
                 <ui:Label name="selectedIdLabel" text="id: -" class="info-line"/>
