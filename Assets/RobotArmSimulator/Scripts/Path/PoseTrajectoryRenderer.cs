@@ -36,6 +36,12 @@ namespace RobotArmSimulator
         private readonly List<MarkerVisual> _markerVisuals = new List<MarkerVisual>();
         private GameObject _runtimeRoot;
         private int _selectedIndex = -1;
+        private Quaternion _markerRotationOffset = Quaternion.identity;
+
+        public void SetMarkerRotationOffset(Quaternion offset)
+        {
+            _markerRotationOffset = offset;
+        }
 
         public int Count => _markerVisuals.Count;
         public int SelectedIndex => _selectedIndex;
@@ -127,7 +133,7 @@ namespace RobotArmSimulator
             markerObject.name = $"Pose_{index:000}";
             markerObject.transform.SetParent(_runtimeRoot.transform, false);
             markerObject.transform.position = pose.WorldPosition;
-            markerObject.transform.rotation = pose.WorldRotation;
+            markerObject.transform.rotation = pose.WorldRotation * _markerRotationOffset;
             markerObject.transform.localScale = Vector3.one * markerScale;
 
             var collider = markerObject.GetComponent<Collider>();

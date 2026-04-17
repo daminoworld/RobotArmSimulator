@@ -367,6 +367,7 @@ namespace RobotArmSimulator
 
             if (poseRenderer != null)
             {
+                poseRenderer.SetMarkerRotationOffset(GetMarkerRotationOffsetForCurrentDataset());
                 poseRenderer.Render(_taskData != null ? _taskData.Poses : null);
             }
 
@@ -805,6 +806,23 @@ namespace RobotArmSimulator
                     return taskCBaseReference;
                 default:
                     return null;
+            }
+        }
+
+        private Quaternion GetMarkerRotationOffsetForCurrentDataset()
+        {
+            if (taskLoader == null)
+            {
+                return Quaternion.identity;
+            }
+
+            switch (taskLoader.PoseDataset)
+            {
+                case PoseDataset.TaskBCylinder:
+                case PoseDataset.TaskCCoordinateTransform:
+                    return Quaternion.Euler(0f, 90f, 0f);
+                default:
+                    return Quaternion.identity;
             }
         }
 
