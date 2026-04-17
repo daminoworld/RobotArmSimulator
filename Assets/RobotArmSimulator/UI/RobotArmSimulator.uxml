@@ -1,0 +1,47 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="UnityEngine.UIElements ">
+    <Style src="RobotArmSimulator.uss"/>
+    <ui:VisualElement picking-mode="Ignore" class="app-root">
+        <ui:VisualElement picking-mode="Position" class="top-bar panel-surface">
+            <ui:VisualElement class="title-group">
+                <ui:Label text="6-Axis Robot Arm Path Visualization + IK Simulation" class="title"/>
+                <ui:Label name="taskIdValue" text="Task: -" class="meta-label"/>
+                <ui:Label name="sourceFrameValue" text="Source Frame: -" class="meta-label"/>
+            </ui:VisualElement>
+            <ui:VisualElement class="top-summary">
+                <ui:Label name="poseCountValue" text="Pose Count: 0" class="meta-label"/>
+                <ui:Label name="trajectoryCountValue" text="Trajectory Samples: 0" class="meta-label"/>
+                <ui:Label name="statusLabel" text="Status: Waiting for data" class="status-label"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement picking-mode="Ignore" class="content-row">
+            <ui:VisualElement picking-mode="Position" class="panel-surface side-panel">
+                <ui:ScrollView mode="Vertical" class="panel-scroll">
+                    <ui:Label text="Trajectory Control" class="section-title"/>
+                    <ui:DropdownField name="poseDatasetDropdown" label="Pose Dataset" class="dataset-dropdown"/>
+                    <ui:VisualElement name="playbackButtons" class="button-row">
+                        <ui:Button name="playButton" text="Play" class="button-primary"/>
+                        <ui:Button name="pauseButton" text="Pause" class="button-secondary"/>
+                        <ui:Button name="stopButton" text="Stop" class="button-danger button-last"/>
+                    </ui:VisualElement>
+                    <ui:Label name="playbackStateLabel" text="Playback: Stopped" class="info-line"/>
+                    <ui:Label name="timestampLabel" text="time: -" class="info-line"/>
+                    <ui:Label name="segmentLabel" text="segment: -" class="info-line"/>
+                    <ui:Label name="jointValuesLabel" text="joints: -" class="joint-values"/>
+                    <ui:Label text="Waypoints" class="section-title with-margin"/>
+                    <ui:ListView name="waypointList" show-alternating-row-backgrounds="None" class="waypoint-list"/>
+                    <ui:Button name="reloadButton" text="Reload Data" class="reload-button"/>
+                </ui:ScrollView>
+            </ui:VisualElement>
+            <ui:VisualElement picking-mode="Ignore" class="scene-spacer"/>
+            <ui:VisualElement picking-mode="Position" class="panel-surface side-panel details-panel">
+                <ui:Label text="Selected Waypoint" class="section-title"/>
+                <ui:Label name="selectedIdLabel" text="id: -" class="info-line"/>
+                <ui:Label name="selectedLocalPositionLabel" text="workpiecePosition: -" class="info-line"/>
+                <ui:Label name="selectedLocalRotationLabel" text="workpieceRotation: -" class="info-line"/>
+                <ui:Label name="selectedWorldPositionLabel" text="worldPosition: -" class="info-line"/>
+                <ui:Label name="selectedWorldRotationLabel" text="worldRotation: -" class="info-line"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
