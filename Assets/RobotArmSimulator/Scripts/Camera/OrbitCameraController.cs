@@ -29,6 +29,17 @@ namespace RobotArmSimulator
         private float _yaw = 145f;
         private float _pitch = 24f;
 
+        private void Awake()
+        {
+            var euler = transform.eulerAngles;
+            _yaw = euler.y;
+            _pitch = euler.x > 180f ? euler.x - 360f : euler.x;
+            _pitch = Mathf.Clamp(_pitch, minVerticalAngle, maxVerticalAngle);
+
+            var rotation = Quaternion.Euler(_pitch, _yaw, 0f);
+            _pivot = transform.position + rotation * new Vector3(0f, 0f, _distance);
+        }
+
         private void LateUpdate()
         {
             var pointerBlocked = IsPointerBlocked?.Invoke() == true;
@@ -37,9 +48,9 @@ namespace RobotArmSimulator
             {
                 HandleOrbit();
                 HandlePan();
-                HandleZoom();
             }
 
+            HandleZoom();
             UpdateTransform();
         }
 

@@ -186,6 +186,7 @@ GameObject:
   - component: {fileID: 330585545}
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
+  - component: {fileID: 330585548}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -260,8 +261,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.1174441, y: 0.18192838, z: -0.02092616, w: 0.9760487}
-  m_LocalPosition: {x: -0.43, y: 0.51, z: -1}
+  m_LocalRotation: {x: 0.06252027, y: 0.93287593, z: -0.19828895, w: 0.2941347}
+  m_LocalPosition: {x: -0.82658017, y: 0.6508473, z: 0.7262859}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -311,6 +312,27 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &330585548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330585543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f56a9cabd46ca4a3ab16f7dbeec1a7a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RobotArmSimulator.OrbitCameraController
+  orbitSpeed: 200
+  minVerticalAngle: -80
+  maxVerticalAngle: 80
+  panSpeed: 0.5
+  zoomSpeed: 0.1
+  minDistance: 0.08
+  maxDistance: 25
+  frameDistanceMultiplier: 0.85
+  frameMinDistance: 0.25
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -636,6 +658,7 @@ MonoBehaviour:
   playbackController: {fileID: 1226624412}
   robotVisualizer: {fileID: 1226624411}
   ikSolver: {fileID: 1226624410}
+  cameraController: {fileID: 330585548}
   taskABaseReference: {fileID: 0}
   taskBBaseReference: {fileID: 0}
   taskCBaseReference: {fileID: 0}

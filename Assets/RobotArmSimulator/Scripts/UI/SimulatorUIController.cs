@@ -385,7 +385,7 @@ namespace RobotArmSimulator
 
             RefreshSummaryLabels();
             RefreshWaypointList();
-            SetSelectedIndex(_taskData != null && _taskData.Poses.Count > 0 ? 0 : -1, true);
+            SetSelectedIndex(_taskData != null && _taskData.Poses.Count > 0 ? 0 : -1, true, focusCamera: false);
             ikSolver?.SolveImmediately();
             RefreshPoseDatasetDropdown();
             SetStatus(_taskData != null ? $"Loaded {_taskData.TaskId}" : "No data loaded");
@@ -405,7 +405,7 @@ namespace RobotArmSimulator
             ikSolver?.SolveImmediately();
         }
 
-        private void SetSelectedIndex(int index, bool forceUiRefresh, bool syncToolMarker = true)
+        private void SetSelectedIndex(int index, bool forceUiRefresh, bool syncToolMarker = true, bool focusCamera = true)
         {
             if (_taskData == null || _taskData.Poses.Count == 0 || index < 0 || index >= _taskData.Poses.Count)
             {
@@ -431,7 +431,7 @@ namespace RobotArmSimulator
                 robotVisualizer.SetToolTargetPose(selectedPose.WorldPosition, selectedPose.WorldRotation);
             }
 
-            if (selectedPose != null)
+            if (focusCamera && selectedPose != null)
             {
                 cameraController?.FocusPoint(selectedPose.WorldPosition);
             }
@@ -564,7 +564,7 @@ namespace RobotArmSimulator
 
             if (frame.WaypointIndex >= 0 && frame.WaypointIndex != _selectedIndex)
             {
-                SetSelectedIndex(frame.WaypointIndex, false, false);
+                SetSelectedIndex(frame.WaypointIndex, false, false, false);
             }
 
             UpdatePlaybackLabels(frame);
