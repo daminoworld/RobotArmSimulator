@@ -1,0 +1,573 @@
+{
+  "taskId": "TASK-B-CYLINDER-OUTER-SWEEP",
+  "description": "Synthetic cylindrical surface path for coating/polishing preview.",
+  "surfaceType": "Cylinder",
+  "robotModelHint": "generic_6dof",
+  "units": {
+    "position": "meters",
+    "rotation": "degrees"
+  },
+  "frame": "workpiece",
+  "workpiece": {
+    "center": [
+      0.0,
+      0.25,
+      0.0
+    ],
+    "radius": 0.12,
+    "height": 0.36,
+    "axis": "y"
+  },
+  "waypoints": [
+    {
+      "id": "WP_000",
+      "position": [
+        0.0849,
+        0.1,
+        -0.0849
+      ],
+      "rotation": [
+        90.0,
+        135,
+        0.0
+      ],
+      "speed": 0.11,
+      "dwellSec": 0.0,
+      "label": "cylinder_pass",
+      "surfaceNormal": [
+        0.7071,
+        0.0,
+        -0.7071
+      ],
+      "toolState": "on"
+    },
+    {
+      "id": "WP_001",
+      "position": [
+        0.1088,
+        0.1,
+        -0.0507
+      ],
+      "rotation": [
+        90.0,
+        155,
+        0.0
+      ],
+      "speed": 0.11,
+      "dwellSec": 0.0,
+      "label": "cylinder_pass",
+      "surfaceNormal": [
+        0.9063,
+        0.0,
+        -0.4226
+      ],
+      "toolState": "on"
+    },
+    {
+      "id": "WP_002",
+      "position": [
+        0.1195,
+        0.1,
+        -0.0105
+      ],
+      "rotation": [
+        90.0,
+        175,
+        0.0
+      ],
+      "speed": 0.11,
+      "dwellSec": 0.0,
+      "label": "cylinder_pass",
+      "surfaceNormal": [
+        0.9962,
+        0.0,
+        -0.0872
+      ],
+      "toolState": "on"
+    },
+    {
+      "id": "WP_003",
+      "position": [
+        0.1159,
+        0.1,
+        0.0311
+      ],
+      "rotation": [
+        90.0,
+        195,
+        0.0
+      ],
+      "speed": 0.11,
+      "dwellSec": 0.0,
+      "label": "cylinder_pass",
+      "surfaceNormal": [
+        0.9659,
+        0.0,
+        0.2588
+      ],
+      "toolState": "on"
+    },
+    {
+      "id": "WP_004",
+      "position": [
+        0.0983,
+        0.1,
+        0.0688
+      ],
+      "rotation": [
+        90.0,
+        215,
+        0.0
+      ],
+      "speed": 0.11,
+      "dwellSec": 0.0,
+      "label": "cylinder_pass",
+      "surfaceNormal": [
+        0.8192,
+        0.0,
+        0.5736
+      ],
+      "toolState": "on"
+    },
+    {
+      "id": "WP_005",
+      "position": [
+        0.0983,
+        0.17,
+        0.0688
+      ],
+      "rotation": [
+        90.0,
+        215,
+        0.0
+      ],
+      "speed": 0.11,
+      "dwellSec": 0.0,
+      "label": "cylinder_pass",
+      "surfaceNormal": [
+        0.8192,
+        0.0,
+        0.5736
+      ],
+      "toolState": "on"
+    },
+    {
+      "id": "WP_006",
+      "position": [
+        0.1159,
+        0.17,
+        0.0311
+      ],
+      "rotation": [
+        90.0,
+        195,
+        0.0
+      ],
+      "speed": 0.11,
+      "dwellSec": 0.0,
+      "label": "cylinder_pass",
+      "surfaceNormal": [
+        0.9659,
+        0.0,
+        0.2588
+      ],
+      "toolState": "on"
+    },
+    {
+      "id": "WP_007",
+      "position": [
+        0.1195,
+        0.17,
+        -0.0105
+      ],
+      "rotation": [
+        90.0,
+        175,
+        0.0
+      ],
+      "speed": 0.11,
+      "dwellSec": 0.0,
+      "label": "cylinder_pass",
+      "surfaceNormal": [
+        0.9962,
+        0.0,
+        -0.0872
+      ],
+      "toolState": "on"
+    },
+    {
+      "id": "WP_008",
+      "position": [
+        0.1088,
+        0.17,
+        -0.0507
+      ],
+      "rotation": [
+        90.0,
+        155,
+        0.0
+      ],
+      "speed": 0.11,
+      "dwellSec": 0.0,
+      "label": "cylinder_pass",
+      "surfaceNormal": [
+        0.9063,
+        0.0,
+        -0.4226
+      ],
+      "toolState": "on"
+    },
+    {
+      "id": "WP_009",
+      "position": [
+        0.0849,
+        0.17,
+        -0.0849
+      ],
+      "rotation": [
+        90.0,
+        135,
+        0.0
+      ],
+      "speed": 0.11,
+      "dwellSec": 0.0,
+      "label": "cylinder_pass",
+      "surfaceNormal": [
+        0.7071,
+        0.0,
+        -0.7071
+      ],
+      "toolState": "on"
+    },
+    {
+      "id": "WP_010",
+      "position": [
+        0.0849,
+        0.24,
+        -0.0849
+      ],
+      "rotation": [
+        90.0,
+        135,
+        0.0
+      ],
+      "speed": 0.11,
+      "dwellSec": 0.0,
+      "label": "cylinder_pass",
+      "surfaceNormal": [
+        0.7071,
+        0.0,
+        -0.7071
+      ],
+      "toolState": "on"
+    },
+    {
+      "id": "WP_011",
+      "position": [
+        0.1088,
+        0.24,
+        -0.0507
+      ],
+      "rotation": [
+        90.0,
+        155,
+        0.0
+      ],
+      "speed": 0.11,
+      "dwellSec": 0.0,
+      "label": "cylinder_pass",
+      "surfaceNormal": [
+        0.9063,
+        0.0,
+        -0.4226
+      ],
+      "toolState": "on"
+    },
+    {
+      "id": "WP_012",
+      "position": [
+        0.1195,
+        0.24,
+        -0.0105
+      ],
+      "rotation": [
+        90.0,
+        175,
+        0.0
+      ],
+      "speed": 0.11,
+      "dwellSec": 0.0,
+      "label": "cylinder_pass",
+      "surfaceNormal": [
+        0.9962,
+        0.0,
+        -0.0872
+      ],
+      "toolState": "on"
+    },
+    {
+      "id": "WP_013",
+      "position": [
+        0.1159,
+        0.24,
+        0.0311
+      ],
+      "rotation": [
+        90.0,
+        195,
+        0.0
+      ],
+      "speed": 0.11,
+      "dwellSec": 0.0,
+      "label": "cylinder_pass",
+      "surfaceNormal": [
+        0.9659,
+        0.0,
+        0.2588
+      ],
+      "toolState": "on"
+    },
+    {
+      "id": "WP_014",
+      "position": [
+        0.0983,
+        0.24,
+        0.0688
+      ],
+      "rotation": [
+        90.0,
+        215,
+        0.0
+      ],
+      "speed": 0.11,
+      "dwellSec": 0.0,
+      "label": "cylinder_pass",
+      "surfaceNormal": [
+        0.8192,
+        0.0,
+        0.5736
+      ],
+      "toolState": "on"
+    },
+    {
+      "id": "WP_015",
+      "position": [
+        0.0983,
+        0.31,
+        0.0688
+      ],
+      "rotation": [
+        90.0,
+        215,
+        0.0
+      ],
+      "speed": 0.11,
+      "dwellSec": 0.0,
+      "label": "cylinder_pass",
+      "surfaceNormal": [
+        0.8192,
+        0.0,
+        0.5736
+      ],
+      "toolState": "on"
+    },
+    {
+      "id": "WP_016",
+      "position": [
+        0.1159,
+        0.31,
+        0.0311
+      ],
+      "rotation": [
+        90.0,
+        195,
+        0.0
+      ],
+      "speed": 0.11,
+      "dwellSec": 0.0,
+      "label": "cylinder_pass",
+      "surfaceNormal": [
+        0.9659,
+        0.0,
+        0.2588
+      ],
+      "toolState": "on"
+    },
+    {
+      "id": "WP_017",
+      "position": [
+        0.1195,
+        0.31,
+        -0.0105
+      ],
+      "rotation": [
+        90.0,
+        175,
+        0.0
+      ],
+      "speed": 0.11,
+      "dwellSec": 0.0,
+      "label": "cylinder_pass",
+      "surfaceNormal": [
+        0.9962,
+        0.0,
+        -0.0872
+      ],
+      "toolState": "on"
+    },
+    {
+      "id": "WP_018",
+      "position": [
+        0.1088,
+        0.31,
+        -0.0507
+      ],
+      "rotation": [
+        90.0,
+        155,
+        0.0
+      ],
+      "speed": 0.11,
+      "dwellSec": 0.0,
+      "label": "cylinder_pass",
+      "surfaceNormal": [
+        0.9063,
+        0.0,
+        -0.4226
+      ],
+      "toolState": "on"
+    },
+    {
+      "id": "WP_019",
+      "position": [
+        0.0849,
+        0.31,
+        -0.0849
+      ],
+      "rotation": [
+        90.0,
+        135,
+        0.0
+      ],
+      "speed": 0.11,
+      "dwellSec": 0.0,
+      "label": "cylinder_pass",
+      "surfaceNormal": [
+        0.7071,
+        0.0,
+        -0.7071
+      ],
+      "toolState": "on"
+    },
+    {
+      "id": "WP_020",
+      "position": [
+        0.0849,
+        0.38,
+        -0.0849
+      ],
+      "rotation": [
+        90.0,
+        135,
+        0.0
+      ],
+      "speed": 0.11,
+      "dwellSec": 0.0,
+      "label": "cylinder_pass",
+      "surfaceNormal": [
+        0.7071,
+        0.0,
+        -0.7071
+      ],
+      "toolState": "on"
+    },
+    {
+      "id": "WP_021",
+      "position": [
+        0.1088,
+        0.38,
+        -0.0507
+      ],
+      "rotation": [
+        90.0,
+        155,
+        0.0
+      ],
+      "speed": 0.11,
+      "dwellSec": 0.0,
+      "label": "cylinder_pass",
+      "surfaceNormal": [
+        0.9063,
+        0.0,
+        -0.4226
+      ],
+      "toolState": "on"
+    },
+    {
+      "id": "WP_022",
+      "position": [
+        0.1195,
+        0.38,
+        -0.0105
+      ],
+      "rotation": [
+        90.0,
+        175,
+        0.0
+      ],
+      "speed": 0.11,
+      "dwellSec": 0.0,
+      "label": "cylinder_pass",
+      "surfaceNormal": [
+        0.9962,
+        0.0,
+        -0.0872
+      ],
+      "toolState": "on"
+    },
+    {
+      "id": "WP_023",
+      "position": [
+        0.1159,
+        0.38,
+        0.0311
+      ],
+      "rotation": [
+        90.0,
+        195,
+        0.0
+      ],
+      "speed": 0.11,
+      "dwellSec": 0.0,
+      "label": "cylinder_pass",
+      "surfaceNormal": [
+        0.9659,
+        0.0,
+        0.2588
+      ],
+      "toolState": "on"
+    },
+    {
+      "id": "WP_024",
+      "position": [
+        0.0983,
+        0.38,
+        0.0688
+      ],
+      "rotation": [
+        90.0,
+        215,
+        0.0
+      ],
+      "speed": 0.11,
+      "dwellSec": 0.0,
+      "label": "cylinder_pass",
+      "surfaceNormal": [
+        0.8192,
+        0.0,
+        0.5736
+      ],
+      "toolState": "on"
+    }
+  ]
+}

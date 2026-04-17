@@ -1,0 +1,100 @@
+{
+  "taskId": "TASK-C-COORDINATE-TRANSFORM",
+  "description": "Synthetic pose data in workpiece frame with a workpiece transform relative to robot base.",
+  "units": {
+    "position": "meters",
+    "rotation": "degrees"
+  },
+  "sourceFrame": {
+    "name": "robot_base",
+    "axisConvention": {
+      "x": "forward",
+      "y": "left",
+      "z": "up"
+    }
+  },
+  "workpieceFrameInRobotBase": {
+    "translation": [
+      0.62,
+      -0.18,
+      0.91
+    ],
+    "rotationEulerZYX": [
+      15.0,
+      0.0,
+      90.0
+    ]
+  },
+  "unityFrameAssumption": {
+    "x": "right",
+    "y": "up",
+    "z": "forward"
+  },
+  "posesInWorkpieceFrame": [
+    {
+      "id": "P_000",
+      "position": [
+        0.0,
+        0.18,
+        -0.12
+      ],
+      "rotation": [
+        90.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "P_001",
+      "position": [
+        0.1,
+        0.18,
+        -0.08
+      ],
+      "rotation": [
+        90.0,
+        15.0,
+        0.0
+      ]
+    },
+    {
+      "id": "P_002",
+      "position": [
+        0.2,
+        0.18,
+        -0.04
+      ],
+      "rotation": [
+        90.0,
+        30.0,
+        0.0
+      ]
+    },
+    {
+      "id": "P_003",
+      "position": [
+        0.3,
+        0.18,
+        0.0
+      ],
+      "rotation": [
+        90.0,
+        45.0,
+        0.0
+      ]
+    },
+    {
+      "id": "P_004",
+      "position": [
+        0.4,
+        0.18,
+        0.04
+      ],
+      "rotation": [
+        90.0,
+        60.0,
+        0.0
+      ]
+    }
+  ]
+}

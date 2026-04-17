@@ -1,0 +1,200 @@
+{
+  "taskId": "TASK-A-PLANE-SWEEP",
+  "description": "Synthetic surface-finishing path on a planar workpiece.",
+  "surfaceType": "Plane",
+  "robotModelHint": "generic_6dof",
+  "units": {
+    "position": "meters",
+    "rotation": "degrees"
+  },
+  "frame": "workpiece",
+  "workpiece": {
+    "origin": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "size": [
+      0.6,
+      0.4,
+      0.02
+    ],
+    "surfaceNormal": [
+      0.0,
+      1.0,
+      0.0
+    ]
+  },
+  "waypoints": [
+    {
+      "id": "WP_000",
+      "position": [
+        -0.22,
+        0.18,
+        -0.14
+      ],
+      "rotation": [
+        90.0,
+        0.0,
+        0.0
+      ],
+      "speed": 0.1,
+      "dwellSec": 0.15,
+      "label": "approach",
+      "toolState": "off"
+    },
+    {
+      "id": "WP_001",
+      "position": [
+        0.22,
+        0.18,
+        -0.14
+      ],
+      "rotation": [
+        90.0,
+        180.0,
+        0.0
+      ],
+      "speed": 0.16,
+      "dwellSec": 0.0,
+      "label": "finish_pass",
+      "toolState": "on"
+    },
+    {
+      "id": "WP_002",
+      "position": [
+        0.22,
+        0.18,
+        -0.08
+      ],
+      "rotation": [
+        90.0,
+        180.0,
+        0.0
+      ],
+      "speed": 0.16,
+      "dwellSec": 0.0,
+      "label": "finish_pass",
+      "toolState": "on"
+    },
+    {
+      "id": "WP_003",
+      "position": [
+        -0.22,
+        0.18,
+        -0.08
+      ],
+      "rotation": [
+        90.0,
+        0.0,
+        0.0
+      ],
+      "speed": 0.16,
+      "dwellSec": 0.0,
+      "label": "finish_pass",
+      "toolState": "on"
+    },
+    {
+      "id": "WP_004",
+      "position": [
+        -0.22,
+        0.18,
+        -0.02
+      ],
+      "rotation": [
+        90.0,
+        0.0,
+        0.0
+      ],
+      "speed": 0.16,
+      "dwellSec": 0.0,
+      "label": "finish_pass",
+      "toolState": "on"
+    },
+    {
+      "id": "WP_005",
+      "position": [
+        0.22,
+        0.18,
+        -0.02
+      ],
+      "rotation": [
+        90.0,
+        180.0,
+        0.0
+      ],
+      "speed": 0.16,
+      "dwellSec": 0.0,
+      "label": "finish_pass",
+      "toolState": "on"
+    },
+    {
+      "id": "WP_006",
+      "position": [
+        0.22,
+        0.18,
+        0.04
+      ],
+      "rotation": [
+        90.0,
+        180.0,
+        0.0
+      ],
+      "speed": 0.16,
+      "dwellSec": 0.0,
+      "label": "finish_pass",
+      "toolState": "on"
+    },
+    {
+      "id": "WP_007",
+      "position": [
+        -0.22,
+        0.18,
+        0.04
+      ],
+      "rotation": [
+        90.0,
+        0.0,
+        0.0
+      ],
+      "speed": 0.16,
+      "dwellSec": 0.0,
+      "label": "finish_pass",
+      "toolState": "on"
+    },
+    {
+      "id": "WP_008",
+      "position": [
+        -0.22,
+        0.18,
+        0.1
+      ],
+      "rotation": [
+        90.0,
+        0.0,
+        0.0
+      ],
+      "speed": 0.16,
+      "dwellSec": 0.0,
+      "label": "finish_pass",
+      "toolState": "on"
+    },
+    {
+      "id": "WP_009",
+      "position": [
+        0.22,
+        0.18,
+        0.1
+      ],
+      "rotation": [
+        90.0,
+        180.0,
+        0.0
+      ],
+      "speed": 0.1,
+      "dwellSec": 0.15,
+      "label": "depart",
+      "toolState": "off"
+    }
+  ]
+}
