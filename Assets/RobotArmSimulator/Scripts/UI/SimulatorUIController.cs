@@ -14,6 +14,7 @@ namespace RobotArmSimulator
         [SerializeField] private JointTrajectoryPlaybackController playbackController;
         [SerializeField] private SimpleJointRobotVisualizer robotVisualizer;
         [SerializeField] private Simple6AxisIkSolver ikSolver;
+        [SerializeField] private OrbitCameraController cameraController;
 
         [Header("Robot Placement")]
         [SerializeField] private Transform taskABaseReference;
@@ -119,6 +120,12 @@ namespace RobotArmSimulator
             BindUiEvents();
             SubscribeExternalEvents();
             RenderEmptyState();
+
+            if (cameraController != null)
+            {
+                cameraController.IsPointerBlocked = () =>
+                    IsPointerOverInteractivePanel(PointerInput.GetPointerScreenPosition());
+            }
         }
 
         private void Start()
@@ -294,6 +301,20 @@ namespace RobotArmSimulator
             _bound = false;
         }
 
+        private bool IsPointerOverInteractivePanel(Vector2 screenPosition)
+        {
+            var root = uiDocument?.rootVisualElement;
+            var panel = root?.panel;
+            if (panel == null)
+            {
+                return false;
+            }
+
+            var panelPosition = RuntimePanelUtils.ScreenToPanel(panel, screenPosition);
+            var picked = panel.Pick(panelPosition);
+            return picked != null && picked.pickingMode != PickingMode.Ignore;
+        }
+
         private void SubscribeExternalEvents()
         {
             UnsubscribeExternalEvents();
@@ -408,6 +429,11 @@ namespace RobotArmSimulator
             if (syncToolMarker && robotVisualizer != null && selectedPose != null)
             {
                 robotVisualizer.SetToolTargetPose(selectedPose.WorldPosition, selectedPose.WorldRotation);
+            }
+
+            if (selectedPose != null)
+            {
+                cameraController?.FocusPoint(selectedPose.WorldPosition);
             }
         }
 
