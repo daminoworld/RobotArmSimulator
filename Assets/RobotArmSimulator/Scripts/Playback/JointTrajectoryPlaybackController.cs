@@ -196,6 +196,14 @@ namespace RobotArmSimulator
             SetState(JointTrajectoryPlaybackState.Stopped);
         }
 
+        public void SetPlaybackMode(JointTrajectoryPlaybackMode mode)
+        {
+            if (playbackMode == mode) return;
+            Stop();
+            playbackMode = mode;
+            ResetPlaybackToStart();
+        }
+
         private void EvaluateAndNotify()
         {
             if (!IsDataReadyForPlayback())

@@ -42,6 +42,7 @@ namespace RobotArmSimulator
         [SerializeField] private string pauseButtonName = "pauseButton";
         [SerializeField] private string stopButtonName = "stopButton";
         [SerializeField] private string reloadButtonName = "reloadButton";
+        [SerializeField] private string playbackModeDropdownName = "playbackModeDropdown";
         [SerializeField] private string ikSolverDropdownName = "ikSolverDropdown";
         [SerializeField] private string selectedIdLabelName = "selectedIdLabel";
         [SerializeField] private string selectedLocalPositionLabelName = "selectedLocalPositionLabel";
@@ -53,8 +54,10 @@ namespace RobotArmSimulator
         private readonly List<string> _waypointItems = new List<string>();
 
         private IIkSolver _activeIkSolver;
+        private DropdownField _playbackModeDropdown;
         private DropdownField _ikSolverDropdown;
 
+        private static readonly List<string> PlaybackModeChoices = new List<string> { "Waypoint IK", "Joint FK (CSV)" };
         private static readonly List<string> IkSolverChoices = new List<string> { "CCD", "FABRIK", "Jacobian DLS" };
 
         private Label _taskIdValueLabel;
@@ -218,6 +221,13 @@ namespace RobotArmSimulator
                 RefreshPoseDatasetDropdown();
             }
 
+            _playbackModeDropdown = root.Q<DropdownField>(playbackModeDropdownName);
+            if (_playbackModeDropdown != null)
+            {
+                _playbackModeDropdown.choices = PlaybackModeChoices;
+                _playbackModeDropdown.SetValueWithoutNotify(PlaybackModeChoices[0]);
+            }
+
             _ikSolverDropdown = root.Q<DropdownField>(ikSolverDropdownName);
             if (_ikSolverDropdown != null)
             {
@@ -292,6 +302,11 @@ namespace RobotArmSimulator
                 _poseDatasetDropdown.RegisterValueChangedCallback(OnPoseDatasetChanged);
             }
 
+            if (_playbackModeDropdown != null)
+            {
+                _playbackModeDropdown.RegisterValueChangedCallback(OnPlaybackModeChanged);
+            }
+
             if (_ikSolverDropdown != null)
             {
                 _ikSolverDropdown.RegisterValueChangedCallback(OnIkSolverChanged);
@@ -341,6 +356,11 @@ namespace RobotArmSimulator
             if (_poseDatasetDropdown != null)
             {
                 _poseDatasetDropdown.UnregisterValueChangedCallback(OnPoseDatasetChanged);
+            }
+
+            if (_playbackModeDropdown != null)
+            {
+                _playbackModeDropdown.UnregisterValueChangedCallback(OnPlaybackModeChanged);
             }
 
             if (_ikSolverDropdown != null)
@@ -665,6 +685,46 @@ namespace RobotArmSimulator
         private void OnReloadClicked()
         {
             taskLoader?.LoadTask();
+        }
+
+        private void OnPlaybackModeChanged(ChangeEvent<string> evt)
+        {
+            var isFk = string.Equals(evt.newValue, PlaybackModeChoices[1], StringComparison.Ordinal);
+            var mode = isFk ? JointTrajectoryPlaybackMode.JointCsv : JointTrajectoryPlaybackMode.WaypointIk;
+            playbackController?.SetPlaybackMode(mode);
+            ApplyPlaybackModeToUi(isFk);
+        }
+
+        private void ApplyPlaybackModeToUi(bool isFk)
+        {
+            if (_ikSolverDropdown != null) _ikSolverDropdown.SetEnabled(!isFk);
+            if (_poseDatasetDropdown != null) _poseDatasetDropdown.SetEnabled(!isFk);
+            if (isFk)
+            {
+                if (ccdSolver    != null) ccdSolver.enabled    = false;
+                if (fabrikSolver != null) fabrikSolver.enabled = false;
+                if (dlsSolver    != null) dlsSolver.enabled    = false;
+                _activeIkSolver = null;
+                poseRenderer?.Render(null);
+            }
+            else
+            {
+                SetActiveSolver(GetSolverFromDropdown());
+                if (poseRenderer != null)
+                {
+                    poseRenderer.SetMarkerRotationOffset(GetMarkerRotationOffsetForCurrentDataset());
+                    poseRenderer.Render(_taskData?.Poses);
+                    poseRenderer.Highlight(_selectedIndex);
+                }
+            }
+        }
+
+        private MonoBehaviour GetSolverFromDropdown()
+        {
+            var val = _ikSolverDropdown?.value ?? string.Empty;
+            if (string.Equals(val, IkSolverChoices[1], StringComparison.Ordinal)) return fabrikSolver;
+            if (string.Equals(val, IkSolverChoices[2], StringComparison.Ordinal)) return dlsSolver;
+            return ccdSolver;
         }
 
         private void OnIkSolverChanged(ChangeEvent<string> evt)
