@@ -557,6 +557,7 @@ GameObject:
   - component: {fileID: 1226624410}
   - component: {fileID: 1226624416}
   - component: {fileID: 1226624408}
+  - component: {fileID: 1226624417}
   m_Layer: 0
   m_Name: SimulatorRoot
   m_TagString: Untagged
@@ -691,6 +692,7 @@ MonoBehaviour:
   robotVisualizer: {fileID: 1226624411}
   ccdSolver: {fileID: 1226624410}
   fabrikSolver: {fileID: 1226624416}
+  dlsSolver: {fileID: 1226624417}
   cameraController: {fileID: 330585548}
   taskABaseReference: {fileID: 1542844988}
   taskBBaseReference: {fileID: 1326092186}
@@ -719,6 +721,7 @@ MonoBehaviour:
   selectedLocalRotationLabelName: selectedLocalRotationLabel
   selectedWorldPositionLabelName: selectedWorldPositionLabel
   selectedWorldRotationLabelName: selectedWorldRotationLabel
+  jointAnglesLabelName: jointAnglesLabel
 --- !u!114 &1226624410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -866,6 +869,27 @@ MonoBehaviour:
   iterationsPerFrame: 12
   maxDegreesPerStep: 960
   positionTolerance: 0.0025
+  alignOrientation: 1
+  orientationBlend: 0.35
+  wristJointCount: 3
+--- !u!114 &1226624417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1226624407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf0d59d5604f04869a5deea68bf68d63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RobotArmSimulator.JacobianDlsIkSolver
+  robotVisualizer: {fileID: 1226624411}
+  solveInLateUpdate: 1
+  iterationsPerFrame: 10
+  maxDegreesPerSecond: 220
+  positionTolerance: 0.0025
+  dampingFactor: 0.05
   alignOrientation: 1
   orientationBlend: 0.35
   wristJointCount: 3

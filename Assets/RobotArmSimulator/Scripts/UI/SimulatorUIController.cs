@@ -15,6 +15,7 @@ namespace RobotArmSimulator
         [SerializeField] private SimpleJointRobotVisualizer robotVisualizer;
         [SerializeField] private Simple6AxisIkSolver ccdSolver;
         [SerializeField] private FabrikIkSolver fabrikSolver;
+        [SerializeField] private JacobianDlsIkSolver dlsSolver;
         [SerializeField] private OrbitCameraController cameraController;
 
         [Header("Robot Placement")]
@@ -54,7 +55,7 @@ namespace RobotArmSimulator
         private IIkSolver _activeIkSolver;
         private DropdownField _ikSolverDropdown;
 
-        private static readonly List<string> IkSolverChoices = new List<string> { "CCD", "FABRIK" };
+        private static readonly List<string> IkSolverChoices = new List<string> { "CCD", "FABRIK", "Jacobian DLS" };
 
         private Label _taskIdValueLabel;
         private Label _poseCountValueLabel;
@@ -127,6 +128,11 @@ namespace RobotArmSimulator
             if (fabrikSolver == null)
             {
                 fabrikSolver = GetComponentInChildren<FabrikIkSolver>();
+            }
+
+            if (dlsSolver == null)
+            {
+                dlsSolver = GetComponentInChildren<JacobianDlsIkSolver>();
             }
         }
 
@@ -663,22 +669,22 @@ namespace RobotArmSimulator
 
         private void OnIkSolverChanged(ChangeEvent<string> evt)
         {
-            var incoming = string.Equals(evt.newValue, IkSolverChoices[1], StringComparison.Ordinal)
-                ? (MonoBehaviour)fabrikSolver
-                : (MonoBehaviour)ccdSolver;
+            MonoBehaviour incoming;
+            if (string.Equals(evt.newValue, IkSolverChoices[1], StringComparison.Ordinal))
+                incoming = fabrikSolver;
+            else if (string.Equals(evt.newValue, IkSolverChoices[2], StringComparison.Ordinal))
+                incoming = dlsSolver;
+            else
+                incoming = ccdSolver;
             SetActiveSolver(incoming);
             _activeIkSolver?.SolveImmediately();
         }
 
         private void SetActiveSolver(MonoBehaviour incoming)
         {
-            var outgoing = ReferenceEquals(incoming, ccdSolver)
-                ? (MonoBehaviour)fabrikSolver
-                : (MonoBehaviour)ccdSolver;
-
-            if (outgoing != null) outgoing.enabled = false;
-            if (incoming != null) incoming.enabled = true;
-
+            if (ccdSolver    != null) ccdSolver.enabled    = ReferenceEquals(incoming, ccdSolver);
+            if (fabrikSolver != null) fabrikSolver.enabled = ReferenceEquals(incoming, fabrikSolver);
+            if (dlsSolver    != null) dlsSolver.enabled    = ReferenceEquals(incoming, dlsSolver);
             _activeIkSolver = incoming as IIkSolver;
         }
 
