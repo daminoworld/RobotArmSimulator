@@ -40,6 +40,8 @@
                 <ui:Label name="selectedLocalRotationLabel" text="workpieceRotation: -" class="info-line"/>
                 <ui:Label name="selectedWorldPositionLabel" text="worldPosition: -" class="info-line"/>
                 <ui:Label name="selectedWorldRotationLabel" text="worldRotation: -" class="info-line"/>
+                <ui:Label text="Joint Angles" class="section-title with-margin"/>
+                <ui:Label name="jointAnglesLabel" text="joints: -" class="joint-values"/>
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

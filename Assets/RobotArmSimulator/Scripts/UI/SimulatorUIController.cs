@@ -47,6 +47,7 @@ namespace RobotArmSimulator
         [SerializeField] private string selectedLocalRotationLabelName = "selectedLocalRotationLabel";
         [SerializeField] private string selectedWorldPositionLabelName = "selectedWorldPositionLabel";
         [SerializeField] private string selectedWorldRotationLabelName = "selectedWorldRotationLabel";
+        [SerializeField] private string jointAnglesLabelName = "jointAnglesLabel";
 
         private readonly List<string> _waypointItems = new List<string>();
 
@@ -75,6 +76,9 @@ namespace RobotArmSimulator
         private Label _selectedLocalRotationLabel;
         private Label _selectedWorldPositionLabel;
         private Label _selectedWorldRotationLabel;
+        private Label _jointAnglesLabel;
+        private float _jointAnglesRefreshTimer;
+        private const float JointAnglesRefreshInterval = 0.05f;
 
         private RobotTaskData _taskData;
         private int _selectedIndex = -1;
@@ -158,6 +162,14 @@ namespace RobotArmSimulator
             }
         }
 
+        private void Update()
+        {
+            _jointAnglesRefreshTimer -= Time.deltaTime;
+            if (_jointAnglesRefreshTimer > 0f) return;
+            _jointAnglesRefreshTimer = JointAnglesRefreshInterval;
+            RefreshJointAnglesLabel();
+        }
+
         private void OnDisable()
         {
             UnbindUiEvents();
@@ -192,6 +204,7 @@ namespace RobotArmSimulator
             _selectedLocalRotationLabel = root.Q<Label>(selectedLocalRotationLabelName);
             _selectedWorldPositionLabel = root.Q<Label>(selectedWorldPositionLabelName);
             _selectedWorldRotationLabel = root.Q<Label>(selectedWorldRotationLabelName);
+            _jointAnglesLabel = root.Q<Label>(jointAnglesLabelName);
 
             if (_poseDatasetDropdown != null)
             {
@@ -731,6 +744,12 @@ namespace RobotArmSimulator
             UpdatePlaybackLabels(null);
             SetStatus("Waiting for data");
             UpdatePlaybackButtons();
+        }
+
+        private void RefreshJointAnglesLabel()
+        {
+            if (robotVisualizer == null) return;
+            SetLabel(_jointAnglesLabel, FormatJointValues(robotVisualizer.GetCurrentJointAnglesCopy()));
         }
 
         private void SetStatus(string status)
