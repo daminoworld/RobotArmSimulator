@@ -202,6 +202,10 @@ Assets/RobotArmSimulator/
 - 알고리즘 원리 학습, 동작 검증, 파라미터 튜닝 및 디버깅은 직접 수행했습니다
 - Waypoint 샘플 데이터는 AI 도구를 통해 생성했으며, 실제 로봇 데이터가 아닙니다
 
+## Third-Party Credits
+
+- **"Articulated Robot"** by Abdullah (@abd_3d) — [Sketchfab](https://sketchfab.com/3d-models/articulated-robot-8e963bc34dab4a8f97be06b85cbc525e) / [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+
 ## License
 
 MIT
