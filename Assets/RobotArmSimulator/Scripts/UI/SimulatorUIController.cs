@@ -474,6 +474,7 @@ namespace RobotArmSimulator
             }
 
             SetSelectedIndex(_waypointList.selectedIndex, false);
+            SolveIkOnce();
         }
 
         private void SetSelectedIndex(int index, bool forceUiRefresh, bool syncToolMarker = true)
@@ -696,6 +697,18 @@ namespace RobotArmSimulator
         private void OnReloadClicked()
         {
             taskLoader?.LoadTask();
+        }
+
+        private void SolveIkOnce()
+        {
+            if (playbackController != null
+                && playbackController.PlaybackMode != JointTrajectoryPlaybackMode.WaypointIk)
+            {
+                return;
+            }
+
+            var solver = GetSolverFromDropdown() as IIkSolver;
+            solver?.SolveImmediately();
         }
 
         private void OnPlaybackModeChanged(ChangeEvent<string> evt)
