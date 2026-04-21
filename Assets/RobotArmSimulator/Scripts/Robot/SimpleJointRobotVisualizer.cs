@@ -5,6 +5,18 @@ namespace RobotArmSimulator
 {
     public sealed class SimpleJointRobotVisualizer : MonoBehaviour
     {
+        [Header("External Rig (FBX Model)")]
+        [Tooltip("활성화하면 아래 본 트랜스폼을 직접 사용합니다. 비활성화하면 프로시저럴 메시를 자동 생성합니다.")]
+        [SerializeField] private bool useExternalJoints;
+        [SerializeField] private Transform externalJoint1;
+        [SerializeField] private Transform externalJoint2;
+        [SerializeField] private Transform externalJoint3;
+        [SerializeField] private Transform externalJoint4;
+        [SerializeField] private Transform externalJoint5;
+        [SerializeField] private Transform externalJoint6;
+        [SerializeField] private Transform externalToolMarker;
+        [SerializeField] private Transform externalIkTarget;
+
         [Header("Hierarchy")]
         [SerializeField] private Transform robotRoot;
         [SerializeField] private bool autoCreateHierarchyWhenMissing = true;
@@ -18,13 +30,14 @@ namespace RobotArmSimulator
 
         [Header("Joint Axes")]
         [SerializeField] private Vector3 joint1Axis = Vector3.up;
-        [SerializeField] private Vector3 joint2Axis = Vector3.right;
-        [SerializeField] private Vector3 joint3Axis = Vector3.right;
-        [SerializeField] private Vector3 joint4Axis = Vector3.forward;
-        [SerializeField] private Vector3 joint5Axis = Vector3.right;
-        [SerializeField] private Vector3 joint6Axis = Vector3.forward;
+        [SerializeField] private Vector3 joint2Axis = Vector3.up;
+        [SerializeField] private Vector3 joint3Axis = Vector3.up;
+        [SerializeField] private Vector3 joint4Axis = Vector3.up;
+        [SerializeField] private Vector3 joint5Axis = Vector3.up;
+        [SerializeField] private Vector3 joint6Axis = Vector3.up;
 
         private readonly List<Transform> _jointPivots = new List<Transform>(6);
+        private readonly Quaternion[] _restPoseRotations = new Quaternion[6];
         private readonly float[] _currentJointAnglesDeg = new float[6];
         private Transform _toolMarkerTransform;
         private Transform _toolTargetTransform;
@@ -93,7 +106,9 @@ namespace RobotArmSimulator
                     axis = Vector3.up;
                 }
 
-                pivot.localRotation = Quaternion.AngleAxis(angle, axis.normalized);
+                pivot.localRotation = useExternalJoints
+                    ? _restPoseRotations[i] * Quaternion.AngleAxis(angle, axis.normalized)
+                    : Quaternion.AngleAxis(angle, axis.normalized);
                 _currentJointAnglesDeg[i] = NormalizeAngle(angle);
             }
 
@@ -186,6 +201,12 @@ namespace RobotArmSimulator
 
         private void EnsureHierarchy()
         {
+            if (useExternalJoints)
+            {
+                EnsureExternalHierarchy();
+                return;
+            }
+
             if (robotRoot == null)
             {
                 if (!autoCreateHierarchyWhenMissing)
@@ -207,6 +228,58 @@ namespace RobotArmSimulator
             BuildHierarchy();
         }
 
+        private void EnsureExternalHierarchy()
+        {
+            if (_jointPivots.Count == 6
+                && _toolMarkerTransform != null
+                && _toolTargetTransform != null)
+            {
+                return;
+            }
+
+            _jointPivots.Clear();
+            var externals = new[]
+            {
+                externalJoint1, externalJoint2, externalJoint3,
+                externalJoint4, externalJoint5, externalJoint6
+            };
+
+            for (var i = 0; i < externals.Length; i++)
+            {
+                _jointPivots.Add(externals[i]);
+                _restPoseRotations[i] = externals[i] != null
+                    ? externals[i].localRotation
+                    : Quaternion.identity;
+            }
+
+            _toolMarkerTransform = externalToolMarker;
+
+            if (_toolTargetTransform == null)
+            {
+                if (externalIkTarget != null)
+                {
+                    _toolTargetTransform = externalIkTarget;
+                }
+                else
+                {
+                    var ikTarget = new GameObject("IkTarget_External").transform;
+                    ikTarget.SetParent(transform, false);
+                    if (_toolMarkerTransform != null)
+                    {
+                        ikTarget.SetPositionAndRotation(
+                            _toolMarkerTransform.position,
+                            _toolMarkerTransform.rotation);
+                    }
+                    _toolTargetTransform = ikTarget;
+                }
+            }
+
+            for (var i = 0; i < _currentJointAnglesDeg.Length; i++)
+            {
+                _currentJointAnglesDeg[i] = 0f;
+            }
+        }
+
         private void BuildHierarchy()
         {
             Transform parent = robotRoot;
@@ -217,6 +290,7 @@ namespace RobotArmSimulator
                 pivot.localPosition = i == 0 ? Vector3.zero : new Vector3(0f, linkLength, 0f);
                 pivot.localRotation = Quaternion.identity;
                 _jointPivots.Add(pivot);
+                _restPoseRotations[i] = Quaternion.identity;
 
                 CreateJointVisual(pivot, i);
                 CreateLinkVisual(pivot, i);

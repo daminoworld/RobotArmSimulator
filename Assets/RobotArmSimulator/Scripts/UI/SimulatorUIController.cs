@@ -235,7 +235,9 @@ namespace RobotArmSimulator
                 _ikSolverDropdown.SetValueWithoutNotify(IkSolverChoices[0]);
             }
 
-            SetActiveSolver(ccdSolver);
+            if (ccdSolver != null) ccdSolver.enabled = false;
+            if (fabrikSolver != null) fabrikSolver.enabled = false;
+            if (dlsSolver != null) dlsSolver.enabled = false;
 
             if (_waypointList != null)
             {
@@ -457,7 +459,6 @@ namespace RobotArmSimulator
             RefreshSummaryLabels();
             RefreshWaypointList();
             SetSelectedIndex(_taskData != null && _taskData.Poses.Count > 0 ? 0 : -1, true);
-            _activeIkSolver?.SolveImmediately();
             RefreshPoseDatasetDropdown();
             SetStatus(_taskData != null ? $"Loaded {_taskData.TaskId}" : "No data loaded");
             UpdatePlaybackLabels(playbackController != null ? playbackController.CurrentFrame : null);
@@ -473,7 +474,6 @@ namespace RobotArmSimulator
             }
 
             SetSelectedIndex(_waypointList.selectedIndex, false);
-            _activeIkSolver?.SolveImmediately();
         }
 
         private void SetSelectedIndex(int index, bool forceUiRefresh, bool syncToolMarker = true)
@@ -665,6 +665,12 @@ namespace RobotArmSimulator
 
         private void OnPlayClicked()
         {
+            if (playbackController != null
+                && playbackController.PlaybackMode == JointTrajectoryPlaybackMode.WaypointIk)
+            {
+                SetActiveSolver(GetSolverFromDropdown());
+            }
+
             playbackController?.Play();
             UpdatePlaybackButtons();
         }
@@ -678,7 +684,12 @@ namespace RobotArmSimulator
         private void OnStopClicked()
         {
             playbackController?.Stop();
-            _activeIkSolver?.SolveImmediately();
+
+            if (ccdSolver != null) ccdSolver.enabled = false;
+            if (fabrikSolver != null) fabrikSolver.enabled = false;
+            if (dlsSolver != null) dlsSolver.enabled = false;
+            _activeIkSolver = null;
+
             UpdatePlaybackButtons();
         }
 
@@ -729,15 +740,12 @@ namespace RobotArmSimulator
 
         private void OnIkSolverChanged(ChangeEvent<string> evt)
         {
-            MonoBehaviour incoming;
-            if (string.Equals(evt.newValue, IkSolverChoices[1], StringComparison.Ordinal))
-                incoming = fabrikSolver;
-            else if (string.Equals(evt.newValue, IkSolverChoices[2], StringComparison.Ordinal))
-                incoming = dlsSolver;
-            else
-                incoming = ccdSolver;
-            SetActiveSolver(incoming);
-            _activeIkSolver?.SolveImmediately();
+            var isPlaying = playbackController != null
+                && playbackController.State == JointTrajectoryPlaybackState.Playing;
+            if (isPlaying)
+            {
+                SetActiveSolver(GetSolverFromDropdown());
+            }
         }
 
         private void SetActiveSolver(MonoBehaviour incoming)
