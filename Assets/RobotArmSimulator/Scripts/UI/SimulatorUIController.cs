@@ -645,6 +645,10 @@ namespace RobotArmSimulator
 
         private void OnPlaybackCompleted()
         {
+            if (ccdSolver != null) ccdSolver.enabled = false;
+            if (fabrikSolver != null) fabrikSolver.enabled = false;
+            if (dlsSolver != null) dlsSolver.enabled = false;
+            _activeIkSolver = null;
             UpdatePlaybackButtons();
         }
 
